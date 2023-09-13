@@ -16,21 +16,23 @@
   <meta name="author" content="lijun">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Hi">
+    <meta name="description" content="名词解释PCH   Platform Controller Hub Socket:     指物理cpu，就是实打实可以拿在手上的那个。比如一个服务器上有要安装2个cpu，也就是2 socket.Core:       核。现在科技发展，cpu通常都是多核。Processor&#x2F;Thread:  中文叫处理器&#x2F;线程。processor&#x2F;thread的数量取决于BIOS setup中会不会打开超线程(">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hanjuan666">
-<meta property="og:url" content="http://wonderjli.github.io/2023/02/25/111/index.html">
+<meta property="og:title" content="43.md">
+<meta property="og:url" content="http://wonderjli.github.io/2023/08/22/43-md/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Hi">
+<meta property="og:description" content="名词解释PCH   Platform Controller Hub Socket:     指物理cpu，就是实打实可以拿在手上的那个。比如一个服务器上有要安装2个cpu，也就是2 socket.Core:       核。现在科技发展，cpu通常都是多核。Processor&#x2F;Thread:  中文叫处理器&#x2F;线程。processor&#x2F;thread的数量取决于BIOS setup中会不会打开超线程(">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-02-25T06:29:41.000Z">
-<meta property="article:modified_time" content="2023-08-20T13:20:53.978Z">
+<meta property="og:image" content="http://wonderjli.github.io/2023/08/22/43-md/image.png">
+<meta property="article:published_time" content="2023-08-22T14:18:39.000Z">
+<meta property="article:modified_time" content="2023-09-10T16:18:02.878Z">
 <meta property="article:author" content="lijun">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wonderjli.github.io/2023/08/22/43-md/image.png">
   
   
   
-  <title>hanjuan666 - Hexo</title>
+  <title>43.md - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -196,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="hanjuan666"></span>
+            <span id="subtitle" data-typed-text="43.md"></span>
           
         </div>
 
@@ -207,8 +209,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-02-25 14:29" pubdate>
-          2023年2月25日 下午
+        <time datetime="2023-08-22 22:18" pubdate>
+          2023年8月22日 晚上
         </time>
       </span>
     
@@ -219,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          660 字
         
       </span>
     
@@ -230,7 +232,7 @@
         
         
         
-          1 分钟
+          6 分钟
         
       </span>
     
@@ -267,12 +269,16 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">hanjuan666</h1>
+            <h1 id="seo-header">43.md</h1>
             
             
               <div class="markdown-body">
                 
-                
+                <h1 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h1><p>PCH   Platform Controller Hub</p>
+<p>Socket:     指物理cpu，就是实打实可以拿在手上的那个。比如一个服务器上有要安装2个cpu，也就是2 socket.<br>Core:       核。现在科技发展，cpu通常都是多核。<br>Processor/Thread:  中文叫处理器/线程。processor/thread的数量取决于BIOS setup中会不会打开超线程(hyper-threading)，如果打开超线程的话，那一个core就有2个logic core, 即2个processor. 当然，不打开超线程的话，一个core 只有一个processor.<br>一个物理cpu/socket内部，分为cores部分和uncore modules部分。<br>Register:   寄存器。寄存器位于cpu内部，用于存放程序执行中用到的数据和指令，cpu从寄存器中获取数据，相比从内存中获取快得多。</p>
+<p>在linux下，我们可以通过以下命令来查看当前机器的cpu拓扑结构：<br><img src="image.png" srcset="/img/loading.gif" lazyload alt="Alt text"><br>由上可见，该机器的主板上有一个cpu插槽（socket），这个插槽上的cpu有2核（core），且每核上又有2个线程（thread），也就是说，这个机器是2核4线程的。<br>上图中thread总数是用cpu来表示的，这也是为什么上文说，cpu是个比较宽泛的概念，在不同的语境下有不同的定义，这里表示的就是逻辑核，也就是thread。</p>
+<h2 id="地址解释"><a href="#地址解释" class="headerlink" title="地址解释"></a>地址解释</h2><p>Physical Address: 物理地址。BIOS在遍历一遍计算机硬件后，将所有硬件的存储空间进行了统一的编址（不算硬盘的存储空间），这个编址就是物理地址。</p>
+
                 
               </div>
             
@@ -289,8 +295,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>hanjuan666</div>
-      <div>http://wonderjli.github.io/2023/02/25/111/</div>
+      <div>43.md</div>
+      <div>http://wonderjli.github.io/2023/08/22/43-md/</div>
     </div>
     <div class="license-meta">
       
@@ -302,7 +308,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年2月25日</div>
+          <div>2023年8月22日</div>
         </div>
       
       
@@ -334,9 +340,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/08/20/2023/" title="2023">
+                      <a href="/2023/09/13/BuildAndTestGuideForFWTS/" title="BuildAndTestGuideForFWTS.md">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">2023</span>
+                        <span class="hidden-mobile">BuildAndTestGuideForFWTS.md</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -344,8 +350,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/25/hanjuansb/" title="hanjuan52">
-                        <span class="hidden-mobile">hanjuan52</span>
+                      <a href="/2023/08/20/2023/" title="2023">
+                        <span class="hidden-mobile">2023</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
