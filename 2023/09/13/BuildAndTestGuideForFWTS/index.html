@@ -24,7 +24,7 @@
 <meta property="og:description" content="FirmwareTestSuite (FWTS) Install FWTS tool Run and test Reference Link    FirmwareTestSuite (FWTS)官方网站：https:&#x2F;&#x2F;wiki.ubuntu.com&#x2F;FirmwareTestSuite项目地址：https:&#x2F;&#x2F;github.com&#x2F;ColinIanKing&#x2F;fwts Test Range:ac">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-09-13T14:18:39.000Z">
-<meta property="article:modified_time" content="2023-09-13T16:27:43.913Z">
+<meta property="article:modified_time" content="2023-09-13T16:30:39.164Z">
 <meta property="article:author" content="lijun">
 <meta property="article:tag" content="Tools">
 <meta name="twitter:card" content="summary_large_image">
@@ -285,11 +285,7 @@
 <p>Test Range:<br>acpiinfo xenv xsdt wsmt wpbt wmi wdat waet uefi tpm2 tcpa svkl<br>stao srat spmi spcr slit slic sdev sdei sbst rsdt rsdp rgrt rasf pptt pmtt phat<br>pdtt pcct pcc nfit method msdm msct mpst mpam mchi mcfg madt lpit ivrs iort hmat<br>hpet hest gtdt fpdt fadt facs erst einj ecdt drtm dppt dmar acpi_wpc acpi_time<br>acpi_als acpi_nvdimm acpi_lid acpi_slpb acpi_pwrb acpi_ec smart_battery<br>acpi_battery acpi_ac dbg2 dbgp cstates csrt cpep checksum cedt boot bgrt bert<br>aspt asf apicinstance aest acpitables</p>
 <h2 id="Install-FWTS-tool"><a href="#Install-FWTS-tool" class="headerlink" title="Install FWTS tool"></a>Install FWTS tool</h2><p>(Check your OS type, for example, if the OS is CentOS, the OS belongs to RedHat, so configure the dependencies according to RHEL.)</p>
 <ol>
-<li><p>Configure the dependencies for FWTS according to README<br>`sudo yum install autoconf automake kernel-devel libtool flex flex-devel bison dkms</p>
-<pre><code class="hljs">           libfdt libfdt-devel dtc pcre-devel pcre2 pcre2-devel
-           pcre2-utf16 pcre2-utf32 glib2 glib2-devel pciutils pciutils-devel zlib-devel
-           make libbsd-devel`
-</code></pre>
+<li><p>Configure the dependencies for FWTS according to README<br><code>sudo yum install autoconf automake kernel-devel libtool flex flex-devel bison dkms libfdt libfdt-devel dtc pcre-devel pcre2 pcre2-devel pcre2-utf16 pcre2-utf32 glib2 glib2-devel pciutils pciutils-devel zlib-devel make libbsd-devel</code></p>
 </li>
 <li><p>Download FWTS source code:<br><code>git clone https://github.com/ColinIanKing/fwts</code></p>
 </li>
