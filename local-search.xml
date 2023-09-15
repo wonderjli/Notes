@@ -20,7 +20,15 @@
     
     <tags>
       
-      <tag>issues ACPI FADT SMI SCI</tag>
+      <tag>issues</tag>
+      
+      <tag>ACPI</tag>
+      
+      <tag>FADT</tag>
+      
+      <tag>SMI</tag>
+      
+      <tag>SCI</tag>
       
     </tags>
     
@@ -29,17 +37,23 @@
   
   
   <entry>
-    <title>BuildAndTestGuideForFWTS</title>
+    <title>FWTS tool 的搭建和测试方法</title>
     <link href="/2023/09/13/BuildAndTestGuideForFWTS/"/>
     <url>/2023/09/13/BuildAndTestGuideForFWTS/</url>
     
     <content type="html"><![CDATA[<ul><li><a href="#firmwaretestsuite-fwts">FirmwareTestSuite (FWTS)</a><ul><li><a href="#install-fwts-tool">Install FWTS tool</a></li><li><a href="#run-and-test">Run and test</a></li><li><a href="#reference-links">Reference Links</a></li></ul></li></ul><h1 id="FirmwareTestSuite-FWTS"><a href="#FirmwareTestSuite-FWTS" class="headerlink" title="FirmwareTestSuite (FWTS)"></a>FirmwareTestSuite (FWTS)</h1><p>官方网站：<a href="https://wiki.ubuntu.com/FirmwareTestSuite">https://wiki.ubuntu.com/FirmwareTestSuite</a><br>项目地址：<a href="https://github.com/ColinIanKing/fwts">https://github.com/ColinIanKing/fwts</a></p><p>Test Range:<br>acpiinfo xenv xsdt wsmt wpbt wmi wdat waet uefi tpm2 tcpa svkl<br>stao srat spmi spcr slit slic sdev sdei sbst rsdt rsdp rgrt rasf pptt pmtt phat<br>pdtt pcct pcc nfit method msdm msct mpst mpam mchi mcfg madt lpit ivrs iort hmat<br>hpet hest gtdt fpdt fadt facs erst einj ecdt drtm dppt dmar acpi_wpc acpi_time<br>acpi_als acpi_nvdimm acpi_lid acpi_slpb acpi_pwrb acpi_ec smart_battery<br>acpi_battery acpi_ac dbg2 dbgp cstates csrt cpep checksum cedt boot bgrt bert<br>aspt asf apicinstance aest acpitables</p><h2 id="Install-FWTS-tool"><a href="#Install-FWTS-tool" class="headerlink" title="Install FWTS tool"></a>Install FWTS tool</h2><p>(Check your OS type, for example, if the OS is CentOS, the OS belongs to RedHat, so configure the dependencies according to RHEL.)</p><ol><li><p>Configure the dependencies for FWTS according to README<br><code>sudo yum install autoconf automake kernel-devel libtool flex flex-devel bison dkms libfdt libfdt-devel dtc pcre-devel pcre2 pcre2-devel pcre2-utf16 pcre2-utf32 glib2 glib2-devel pciutils pciutils-devel zlib-devel make libbsd-devel</code></p></li><li><p>Download FWTS source code:<br><code>git clone https://github.com/ColinIanKing/fwts</code></p></li><li><p>Go to the folder<br><code>cd fwts</code></p></li><li><p>To build and install (only if building from source)<br><code>autoreconf -ivf</code><br><code>./configure</code><br><code>make</code><br><code>sudo make install</code></p></li></ol><h2 id="Run-and-test"><a href="#Run-and-test" class="headerlink" title="Run and test"></a>Run and test</h2><blockquote><ul><li>Run all tests<br>sudo fwts</li></ul></blockquote><blockquote><ul><li>Run all ACPI tests and rename the generated file name to RenameResults.log<br>sudo fwts –acpitest -r RenameResults.log</li></ul></blockquote><blockquote><ul><li>Test a single ACPI table<br>sudo fwts SingleTable -r SingleTableResults.log<br>eg: sudo fwts dmar -r DMAR.log</li></ul></blockquote><blockquote><ul><li>Dump related files<br>sudo fwts –dump<br>Instruction: README.txt/dmesg.log/dmidecode.log/lspci.log/acpidump.log/cpuinfo.log will be generated</li></ul></blockquote><h2 id="Reference-Links"><a href="#Reference-Links" class="headerlink" title="Reference Links"></a>Reference Links</h2><p><a href="https://canonical.com/blog/debug-acpi-tables-with-firmware-test-suite-fwts">https://canonical.com/blog/debug-acpi-tables-with-firmware-test-suite-fwts</a><br><a href="https://canonical.com/blog/analyze-acpi-tables-in-a-text-file-with-fwts">https://canonical.com/blog/analyze-acpi-tables-in-a-text-file-with-fwts</a></p>]]></content>
     
     
+    <categories>
+      
+      <category>Tools</category>
+      
+    </categories>
+    
     
     <tags>
       
-      <tag>Tools</tag>
+      <tag>FWTS</tag>
       
     </tags>
     
@@ -61,13 +75,44 @@
   
   
   <entry>
-    <title>2023</title>
-    <link href="/2023/08/20/2023/"/>
-    <url>/2023/08/20/2023/</url>
+    <title>22</title>
+    <link href="/2023/08/20/22/"/>
+    <url>/2023/08/20/22/</url>
     
     <content type="html"><![CDATA[<h1 id="CPU-IO-Mem之间的关系"><a href="#CPU-IO-Mem之间的关系" class="headerlink" title="CPU, IO, Mem之间的关系"></a>CPU, IO, Mem之间的关系</h1><h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><p>CPU： 工人，干活的，判断以及逻辑处理<br>内存：车间，工人干活的地方，车间中加工原料，当车间中没有原料了，在从仓库中取原料，对原料进行加工 内存本身有一定的存储空间，对内存中的数据进行处理的速度比从硬盘取数据再处理的速度快很多<br>硬盘：仓库，原料，数据存储</p><h2 id="三者关系"><a href="#三者关系" class="headerlink" title="三者关系"></a>三者关系</h2><p>CPU对数据进行判断以及逻辑处理，本身不能存储数据，这时cpu从内存取数据进行逻辑计算，如果内存没有数据，才会从硬盘读数据到内存，再对数据进行处理<br>就像人吃饭一样，cpu就是人，内存就是碗，硬盘就是饭锅！<br>当cpu进程等待，会造成内存开销的增加，内存不够用的时候会用到虚拟内存，导致虚拟内存的增加，这时磁盘IO开销就会增加，系统态sy%提升，cpu开销增加；内存里数据不够用，才用磁盘中取数据。</p><h2 id><a href="#" class="headerlink" title></a></h2>]]></content>
     
     
+    <categories>
+      
+      <category>Issues</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Get and parse ACPI table under CentOS</title>
+    <link href="/2023/07/25/GetACPITableUnderCentOS/"/>
+    <url>/2023/07/25/GetACPITableUnderCentOS/</url>
+    
+    <content type="html"><![CDATA[<p>之前遇到过一个问题，说是在CentOS下使用自带的命令acpidump 获取ACPI table 时，会报”Segmentation fault (core dumped)” 错误。<br>因为在shell 下用AcpiDump tool 是可以正常获取ACPI table的，所有有点怀疑是不是CentOS 自带的命令有问题，事实也证明是CentOS 自带的acpidump 命令的版本过低导致的问题。<br>后来，在网上看到一个可以直接在Linux 中查看所有ACPI table的方法。</p><h3 id="在Linux-中获取ACPI-table-方法1"><a href="#在Linux-中获取ACPI-table-方法1" class="headerlink" title="在Linux 中获取ACPI table 方法1"></a>在Linux 中获取ACPI table 方法1</h3><p>Linux 中ACPI table 所在位置：<br> /sys/firmware/acpi/tables/</p><ol><li><p>可以在上面的路径概览所有的ACPI table<br><code>sudo tree</code>  </p></li><li><p>将DSDT table 的内容放到DSDT.aml 上<br><code>sudo cat /sys/firmware/acpi/tables/DSDT &gt; DSDT.aml</code></p></li><li><p>安装iasl tool<br><code>sudo yum install iasl</code></p></li><li><p>使用iasl tool 将*.aml 转换为*.dsl<br><code>sudo iasl -d DSDT.aml</code></p></li><li><p>打开DSDT.dsl 文件<br><code>sudo cat DSDT.dsl</code></p></li></ol><h3 id="在Linux-中获取ACPI-table-方法2"><a href="#在Linux-中获取ACPI-table-方法2" class="headerlink" title="在Linux 中获取ACPI table 方法2"></a>在Linux 中获取ACPI table 方法2</h3><p>第二种方法就是直接用Linux 自带的命令<code>acpidump</code> 来获取。</p><ul><li><code>sudo yum install acpica-tools</code></li><li><code>sudo acpidump -s</code> 查看现有的表</li><li><code>acpidump -n DSDT -b</code></li><li><code>ls</code></li><li><code>iasl -d DSDT.dat </code></li></ul><h3 id="在Linux-中获取ACPI-table-方法3"><a href="#在Linux-中获取ACPI-table-方法3" class="headerlink" title="在Linux 中获取ACPI table 方法3"></a>在Linux 中获取ACPI table 方法3</h3><p>第三种就有点麻烦了，需要用FWTS tool 来获取，输入以下任意一个命令，会生成acpidump.log</p><ul><li><code>sudo fwts --dump</code> / <code>sudo fwts acpidump -</code></li></ul><h5 id="Reference-Links"><a href="#Reference-Links" class="headerlink" title="Reference Links"></a>Reference Links</h5><p><a href="https://blog.csdn.net/fastboy_abc/article/details/86558913">https://blog.csdn.net/fastboy_abc/article/details/86558913</a><br><a href="https://blog.csdn.net/jiangwei0512/article/details/83317890">https://blog.csdn.net/jiangwei0512/article/details/83317890</a><br><a href="https://blog.csdn.net/weixin_41028621/article/details/125142253">https://blog.csdn.net/weixin_41028621/article/details/125142253</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Linux</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>ACPI</tag>
+      
+    </tags>
     
   </entry>
   
@@ -77,19 +122,6 @@
     <title>hanjuan52</title>
     <link href="/2023/02/25/hanjuansb/"/>
     <url>/2023/02/25/hanjuansb/</url>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>hanjuan666</title>
-    <link href="/2023/02/25/111/"/>
-    <url>/2023/02/25/111/</url>
     
     <content type="html"><![CDATA[]]></content>
     

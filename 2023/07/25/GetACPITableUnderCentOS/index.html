@@ -16,21 +16,22 @@
   <meta name="author" content="Wonder">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Personal blog">
+    <meta name="description" content="之前遇到过一个问题，说是在CentOS下使用自带的命令acpidump 获取ACPI table 时，会报”Segmentation fault (core dumped)” 错误。因为在shell 下用AcpiDump tool 是可以正常获取ACPI table的，所有有点怀疑是不是CentOS 自带的命令有问题，事实也证明是CentOS 自带的acpidump 命令的版本过低导致的问题。后来">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hanjuan666">
-<meta property="og:url" content="http://wonderjli.github.io/2023/02/25/111/index.html">
+<meta property="og:title" content="Get and parse ACPI table under CentOS">
+<meta property="og:url" content="http://wonderjli.github.io/2023/07/25/GetACPITableUnderCentOS/index.html">
 <meta property="og:site_name" content="Welcome to my blog">
-<meta property="og:description" content="Personal blog">
+<meta property="og:description" content="之前遇到过一个问题，说是在CentOS下使用自带的命令acpidump 获取ACPI table 时，会报”Segmentation fault (core dumped)” 错误。因为在shell 下用AcpiDump tool 是可以正常获取ACPI table的，所有有点怀疑是不是CentOS 自带的命令有问题，事实也证明是CentOS 自带的acpidump 命令的版本过低导致的问题。后来">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-02-25T06:29:41.000Z">
-<meta property="article:modified_time" content="2023-08-20T13:20:53.978Z">
+<meta property="article:published_time" content="2023-07-25T06:29:41.000Z">
+<meta property="article:modified_time" content="2023-09-15T16:15:57.150Z">
 <meta property="article:author" content="Wonder">
+<meta property="article:tag" content="ACPI">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>hanjuan666 - Welcome to my blog</title>
+  <title>Get and parse ACPI table under CentOS - Welcome to my blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -211,7 +212,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="hanjuan666"></span>
+            <span id="subtitle" data-typed-text="Get and parse ACPI table under CentOS"></span>
           
         </div>
 
@@ -222,8 +223,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-02-25 14:29" pubdate>
-          2023年2月25日 下午
+        <time datetime="2023-07-25 14:29" pubdate>
+          2023年7月25日 下午
         </time>
       </span>
     
@@ -234,7 +235,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          918 字
         
       </span>
     
@@ -273,12 +274,39 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">hanjuan666</h1>
+            <h1 id="seo-header">Get and parse ACPI table under CentOS</h1>
             
             
               <div class="markdown-body">
                 
-                
+                <p>之前遇到过一个问题，说是在CentOS下使用自带的命令acpidump 获取ACPI table 时，会报”Segmentation fault (core dumped)” 错误。<br>因为在shell 下用AcpiDump tool 是可以正常获取ACPI table的，所有有点怀疑是不是CentOS 自带的命令有问题，事实也证明是CentOS 自带的acpidump 命令的版本过低导致的问题。<br>后来，在网上看到一个可以直接在Linux 中查看所有ACPI table的方法。</p>
+<h3 id="在Linux-中获取ACPI-table-方法1"><a href="#在Linux-中获取ACPI-table-方法1" class="headerlink" title="在Linux 中获取ACPI table 方法1"></a>在Linux 中获取ACPI table 方法1</h3><p>Linux 中ACPI table 所在位置：<br> /sys/firmware/acpi/tables/</p>
+<ol>
+<li><p>可以在上面的路径概览所有的ACPI table<br><code>sudo tree</code>  </p>
+</li>
+<li><p>将DSDT table 的内容放到DSDT.aml 上<br><code>sudo cat /sys/firmware/acpi/tables/DSDT &gt; DSDT.aml</code></p>
+</li>
+<li><p>安装iasl tool<br><code>sudo yum install iasl</code></p>
+</li>
+<li><p>使用iasl tool 将*.aml 转换为*.dsl<br><code>sudo iasl -d DSDT.aml</code></p>
+</li>
+<li><p>打开DSDT.dsl 文件<br><code>sudo cat DSDT.dsl</code></p>
+</li>
+</ol>
+<h3 id="在Linux-中获取ACPI-table-方法2"><a href="#在Linux-中获取ACPI-table-方法2" class="headerlink" title="在Linux 中获取ACPI table 方法2"></a>在Linux 中获取ACPI table 方法2</h3><p>第二种方法就是直接用Linux 自带的命令<code>acpidump</code> 来获取。</p>
+<ul>
+<li><code>sudo yum install acpica-tools</code></li>
+<li><code>sudo acpidump -s</code> 查看现有的表</li>
+<li><code>acpidump -n DSDT -b</code></li>
+<li><code>ls</code></li>
+<li><code>iasl -d DSDT.dat </code></li>
+</ul>
+<h3 id="在Linux-中获取ACPI-table-方法3"><a href="#在Linux-中获取ACPI-table-方法3" class="headerlink" title="在Linux 中获取ACPI table 方法3"></a>在Linux 中获取ACPI table 方法3</h3><p>第三种就有点麻烦了，需要用FWTS tool 来获取，输入以下任意一个命令，会生成acpidump.log</p>
+<ul>
+<li><code>sudo fwts --dump</code> / <code>sudo fwts acpidump -</code></li>
+</ul>
+<h5 id="Reference-Links"><a href="#Reference-Links" class="headerlink" title="Reference Links"></a>Reference Links</h5><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/fastboy_abc/article/details/86558913">https://blog.csdn.net/fastboy_abc/article/details/86558913</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/jiangwei0512/article/details/83317890">https://blog.csdn.net/jiangwei0512/article/details/83317890</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41028621/article/details/125142253">https://blog.csdn.net/weixin_41028621/article/details/125142253</a></p>
+
                 
               </div>
             
@@ -286,6 +314,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ACPI/" class="print-no-link">#ACPI</a>
+      
+    </div>
   
 </div>
 
@@ -295,8 +351,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>hanjuan666</div>
-      <div>http://wonderjli.github.io/2023/02/25/111/</div>
+      <div>Get and parse ACPI table under CentOS</div>
+      <div>http://wonderjli.github.io/2023/07/25/GetACPITableUnderCentOS/</div>
     </div>
     <div class="license-meta">
       
@@ -308,7 +364,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年2月25日</div>
+          <div>2023年7月25日</div>
         </div>
       
       
@@ -340,15 +396,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/02/25/hanjuansb/" title="hanjuan52">
+                      <a href="/2023/08/20/22/" title="22">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">hanjuan52</span>
+                        <span class="hidden-mobile">22</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2023/02/25/hanjuansb/" title="hanjuan52">
+                        <span class="hidden-mobile">hanjuan52</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
