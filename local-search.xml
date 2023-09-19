@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>SMBIOS type4  Max Speed 信息错误</title>
+    <link href="/2023/09/17/SMBIOSType4MaxSpeed/"/>
+    <url>/2023/09/17/SMBIOSType4MaxSpeed/</url>
+    
+    <content type="html"><![CDATA[<p>发现在SMBIOS type4 中的Max Speed(14h) 的值有问题，貌似只有1 MHZ，但是Current Speed 却有3600 MHZ, 至少说明Max Speed 是有问题的。这个时候就要在code 中查询type4 中的Max Speed 是如何获取的。<br>除了一开始初始化的地方之外，在另一处，会有一个AddProcessorInfoTable()类似的函数来对Processor Information(type 4) 进行更新。<br>这个函数会根据processor 的实际情况来对type4 进行更新。比如Max Speed 这个offset，它是由一个公式算出来的。</p><p><code>Processor Max Speed = FSB frequency * Core to bus ratio</code></p><p>其中：</p><ul><li>FSB frequency 是处理器的 FSB 频率，以 MHz 为单位。</li><li>Core to bus ratio 是处理器的最大核心到总线比率。</li></ul><p>FSB 是 Front Side Bus 的缩写，它是连接处理器和内存的总线。Core to bus ratio 表示处理器的核心频率可以是总线频率的多少倍。<br>因此，Processor max speed 的值是处理器的 FSB 频率乘以处理器的最大核心到总线比率。</p><p>以下是一些例子：<br>假设处理器的 FSB frequency 为 100 MHz，Core to bus ratio 为 3，那么 CPU max speed 为 100 MHz * 3 = 300 MHz。<br>假设处理器的 FSB frequency 为 200 MHz，Core to bus ratio 为 2，那么 CPU max speed 为 200 MHz * 2 = 400 MHz。</p><p>请注意，处理器的实际运行速度可能低于其最大运行速度。这是因为处理器需要留出一定的余量来处理各种负载。<br>在现代处理器中，CPU max speed 通常是固定的。然而，在一些高端处理器中，CPU max speed 是可调的。用户可以通过 BIOS 设置来调整 CPU max speed，以提高处理器的性能或节省功耗。</p><p>所以在code中，我们能看到这个：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">SmbiosRecord-&gt;MaxSpeed = (UINT16) (GET_CPU_MISC_DATA (ProcessorNumber, IntendedFsbFrequency) * GET_CPU_MISC_DATA (ProcessorNumber, MaxCoreToBusRatio));<br></code></pre></td></tr></table></figure><p>最后发现是因为MaxCoreToBusRatio 的值有问题，导致Max Speed 算出来的值也是不对的，其中FSB frequency 也是External Clock(12h) 的值。</p><p>那么又有一个问题，MaxCoreToBusRatio 这个值是如何从processor 中获取的呢。<br>答案是通过AsmRead 读取MSR_TURBO_RATIO_LIMIT(1ADH) 寄存器，同理，关于Processor 其他的信息也可以从这个寄存器读取。(来自Intel® 64 and IA-32 Architectures<br>Software Developer’s Manual)</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>SMBIOS</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>SMBIOS</tag>
+      
+      <tag>Processor</tag>
+      
+      <tag>MaxSpeed</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>SCI_EN enable in FADT table</title>
     <link href="/2023/09/14/SCI_EN_in_FADT_table/"/>
     <url>/2023/09/14/SCI_EN_in_FADT_table/</url>
@@ -27,31 +56,6 @@
       <tag>SMI</tag>
       
       <tag>SCI</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>FWTS tool 的搭建和测试方法</title>
-    <link href="/2023/09/13/BuildAndTestGuideForFWTS/"/>
-    <url>/2023/09/13/BuildAndTestGuideForFWTS/</url>
-    
-    <content type="html"><![CDATA[<ul><li><a href="#firmwaretestsuite-fwts">FirmwareTestSuite (FWTS)</a><ul><li><a href="#install-fwts-tool">Install FWTS tool</a></li><li><a href="#run-and-test">Run and test</a></li><li><a href="#reference-links">Reference Links</a></li></ul></li></ul><h1 id="FirmwareTestSuite-FWTS"><a href="#FirmwareTestSuite-FWTS" class="headerlink" title="FirmwareTestSuite (FWTS)"></a>FirmwareTestSuite (FWTS)</h1><p>官方网站：<a href="https://wiki.ubuntu.com/FirmwareTestSuite">https://wiki.ubuntu.com/FirmwareTestSuite</a><br>项目地址：<a href="https://github.com/ColinIanKing/fwts">https://github.com/ColinIanKing/fwts</a></p><p>Test Range:<br>acpiinfo xenv xsdt wsmt wpbt wmi wdat waet uefi tpm2 tcpa svkl<br>stao srat spmi spcr slit slic sdev sdei sbst rsdt rsdp rgrt rasf pptt pmtt phat<br>pdtt pcct pcc nfit method msdm msct mpst mpam mchi mcfg madt lpit ivrs iort hmat<br>hpet hest gtdt fpdt fadt facs erst einj ecdt drtm dppt dmar acpi_wpc acpi_time<br>acpi_als acpi_nvdimm acpi_lid acpi_slpb acpi_pwrb acpi_ec smart_battery<br>acpi_battery acpi_ac dbg2 dbgp cstates csrt cpep checksum cedt boot bgrt bert<br>aspt asf apicinstance aest acpitables</p><h2 id="Install-FWTS-tool"><a href="#Install-FWTS-tool" class="headerlink" title="Install FWTS tool"></a>Install FWTS tool</h2><p>(Check your OS type, for example, if the OS is CentOS, the OS belongs to RedHat, so configure the dependencies according to RHEL.)</p><ol><li><p>Configure the dependencies for FWTS according to README<br><code>sudo yum install autoconf automake kernel-devel libtool flex flex-devel bison dkms libfdt libfdt-devel dtc pcre-devel pcre2 pcre2-devel pcre2-utf16 pcre2-utf32 glib2 glib2-devel pciutils pciutils-devel zlib-devel make libbsd-devel</code></p></li><li><p>Download FWTS source code:<br><code>git clone https://github.com/ColinIanKing/fwts</code></p></li><li><p>Go to the folder<br><code>cd fwts</code></p></li><li><p>To build and install (only if building from source)<br><code>autoreconf -ivf</code><br><code>./configure</code><br><code>make</code><br><code>sudo make install</code></p></li></ol><h2 id="Run-and-test"><a href="#Run-and-test" class="headerlink" title="Run and test"></a>Run and test</h2><blockquote><ul><li>Run all tests<br>sudo fwts</li></ul></blockquote><blockquote><ul><li>Run all ACPI tests and rename the generated file name to RenameResults.log<br>sudo fwts –acpitest -r RenameResults.log</li></ul></blockquote><blockquote><ul><li>Test a single ACPI table<br>sudo fwts SingleTable -r SingleTableResults.log<br>eg: sudo fwts dmar -r DMAR.log</li></ul></blockquote><blockquote><ul><li>Dump related files<br>sudo fwts –dump<br>Instruction: README.txt/dmesg.log/dmidecode.log/lspci.log/acpidump.log/cpuinfo.log will be generated</li></ul></blockquote><h2 id="Reference-Links"><a href="#Reference-Links" class="headerlink" title="Reference Links"></a>Reference Links</h2><p><a href="https://canonical.com/blog/debug-acpi-tables-with-firmware-test-suite-fwts">https://canonical.com/blog/debug-acpi-tables-with-firmware-test-suite-fwts</a><br><a href="https://canonical.com/blog/analyze-acpi-tables-in-a-text-file-with-fwts">https://canonical.com/blog/analyze-acpi-tables-in-a-text-file-with-fwts</a></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>Tools</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>FWTS</tag>
       
     </tags>
     
@@ -117,13 +121,25 @@
   
   
   <entry>
-    <title>hanjuan52</title>
-    <link href="/2023/02/25/hanjuansb/"/>
-    <url>/2023/02/25/hanjuansb/</url>
+    <title>FWTS tool 的搭建和测试方法</title>
+    <link href="/2023/07/13/BuildAndTestGuideForFWTS/"/>
+    <url>/2023/07/13/BuildAndTestGuideForFWTS/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<ul><li><a href="#firmwaretestsuite-fwts">FirmwareTestSuite (FWTS)</a><ul><li><a href="#install-fwts-tool">Install FWTS tool</a></li><li><a href="#run-and-test">Run and test</a></li><li><a href="#reference-links">Reference Links</a></li></ul></li></ul><h1 id="FirmwareTestSuite-FWTS"><a href="#FirmwareTestSuite-FWTS" class="headerlink" title="FirmwareTestSuite (FWTS)"></a>FirmwareTestSuite (FWTS)</h1><p>官方网站：<a href="https://wiki.ubuntu.com/FirmwareTestSuite">https://wiki.ubuntu.com/FirmwareTestSuite</a><br>项目地址：<a href="https://github.com/ColinIanKing/fwts">https://github.com/ColinIanKing/fwts</a></p><p>Test Range:<br>acpiinfo xenv xsdt wsmt wpbt wmi wdat waet uefi tpm2 tcpa svkl<br>stao srat spmi spcr slit slic sdev sdei sbst rsdt rsdp rgrt rasf pptt pmtt phat<br>pdtt pcct pcc nfit method msdm msct mpst mpam mchi mcfg madt lpit ivrs iort hmat<br>hpet hest gtdt fpdt fadt facs erst einj ecdt drtm dppt dmar acpi_wpc acpi_time<br>acpi_als acpi_nvdimm acpi_lid acpi_slpb acpi_pwrb acpi_ec smart_battery<br>acpi_battery acpi_ac dbg2 dbgp cstates csrt cpep checksum cedt boot bgrt bert<br>aspt asf apicinstance aest acpitables</p><h2 id="Install-FWTS-tool"><a href="#Install-FWTS-tool" class="headerlink" title="Install FWTS tool"></a>Install FWTS tool</h2><p>(Check your OS type, for example, if the OS is CentOS, the OS belongs to RedHat, so configure the dependencies according to RHEL.)</p><ol><li><p>Configure the dependencies for FWTS according to README<br><code>sudo yum install autoconf automake kernel-devel libtool flex flex-devel bison dkms libfdt libfdt-devel dtc pcre-devel pcre2 pcre2-devel pcre2-utf16 pcre2-utf32 glib2 glib2-devel pciutils pciutils-devel zlib-devel make libbsd-devel</code></p></li><li><p>Download FWTS source code:<br><code>git clone https://github.com/ColinIanKing/fwts</code></p></li><li><p>Go to the folder<br><code>cd fwts</code></p></li><li><p>To build and install (only if building from source)<br><code>autoreconf -ivf</code><br><code>./configure</code><br><code>make</code><br><code>sudo make install</code></p></li></ol><h2 id="Run-and-test"><a href="#Run-and-test" class="headerlink" title="Run and test"></a>Run and test</h2><blockquote><ul><li>Run all tests<br>sudo fwts</li></ul></blockquote><blockquote><ul><li>Run all ACPI tests and rename the generated file name to RenameResults.log<br>sudo fwts –acpitest -r RenameResults.log</li></ul></blockquote><blockquote><ul><li>Test a single ACPI table<br>sudo fwts SingleTable -r SingleTableResults.log<br>eg: sudo fwts dmar -r DMAR.log</li></ul></blockquote><blockquote><ul><li>Dump related files<br>sudo fwts –dump<br>Instruction: README.txt/dmesg.log/dmidecode.log/lspci.log/acpidump.log/cpuinfo.log will be generated</li></ul></blockquote><h2 id="Reference-Links"><a href="#Reference-Links" class="headerlink" title="Reference Links"></a>Reference Links</h2><p><a href="https://canonical.com/blog/debug-acpi-tables-with-firmware-test-suite-fwts">https://canonical.com/blog/debug-acpi-tables-with-firmware-test-suite-fwts</a><br><a href="https://canonical.com/blog/analyze-acpi-tables-in-a-text-file-with-fwts">https://canonical.com/blog/analyze-acpi-tables-in-a-text-file-with-fwts</a></p>]]></content>
     
     
+    <categories>
+      
+      <category>Tools</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>FWTS</tag>
+      
+    </tags>
     
   </entry>
   

@@ -241,6 +241,71 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2023/09/17/SMBIOSType4MaxSpeed/" target="_self">
+          SMBIOS type4  Max Speed 信息错误
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/09/17/SMBIOSType4MaxSpeed/" target="_self">
+        <div>
+          发现在SMBIOS type4 中的Max Speed(14h) 的值有问题，貌似只有1 MHZ，但是Current Speed 却有3600 MHZ, 至少说明Max Speed 是有问题的。这个时候就要在code 中查询type4 中的Max Speed 是如何获取的。除了一开始初始化的地方之外，在另一处，会有一个AddProcessorInfoTable()类似的函数来对Processor
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-09-17 14:29" pubdate>
+              2023-09-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/SMBIOS/" class="category-chain-item">SMBIOS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SMBIOS/">#SMBIOS</a>
+            
+              <a href="/tags/Processor/">#Processor</a>
+            
+              <a href="/tags/MaxSpeed/">#MaxSpeed</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2023/09/14/SCI_EN_in_FADT_table/" target="_self">
           SCI_EN enable in FADT table
         </a>
@@ -295,67 +360,6 @@
               <a href="/tags/SMI/">#SMI</a>
             
               <a href="/tags/SCI/">#SCI</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/09/13/BuildAndTestGuideForFWTS/" target="_self">
-          FWTS tool 的搭建和测试方法
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/09/13/BuildAndTestGuideForFWTS/" target="_self">
-        <div>
-          FirmwareTestSuite (FWTS) Install FWTS tool Run and test Reference Links    FirmwareTestSuite (FWTS)官方网站：https://wiki.ubuntu.com/FirmwareTestSuite项目地址：https://github.com/ColinIanKing/fwts Test Range:a
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-09-13 22:18" pubdate>
-              2023-09-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Tools/" class="category-chain-item">Tools</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/FWTS/">#FWTS</a>
             
           </div>
         
@@ -517,15 +521,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2023/02/25/hanjuansb/" target="_self">
-          hanjuan52
+        <a href="/2023/07/13/BuildAndTestGuideForFWTS/" target="_self">
+          FWTS tool 的搭建和测试方法
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/25/hanjuansb/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/07/13/BuildAndTestGuideForFWTS/" target="_self">
         <div>
-          
+          FirmwareTestSuite (FWTS) Install FWTS tool Run and test Reference Links    FirmwareTestSuite (FWTS)官方网站：https://wiki.ubuntu.com/FirmwareTestSuite项目地址：https://github.com/ColinIanKing/fwts Test Range:a
         </div>
       </a>
 
@@ -533,12 +537,40 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-02-25 14:29" pubdate>
-              2023-02-25
+            <time datetime="2023-07-13 22:18" pubdate>
+              2023-07-13
             </time>
           </div>
         
         
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Tools/" class="category-chain-item">Tools</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FWTS/">#FWTS</a>
+            
+          </div>
         
       </div>
     </article>
