@@ -24,7 +24,7 @@
 <meta property="og:description" content="发现在SMBIOS type4 中的Max Speed(14h) 的值有问题，貌似只有1 MHZ，但是Current Speed 却有3600 MHZ, 至少说明Max Speed 是有问题的。这个时候就要在code 中查询type4 中的Max Speed 是如何获取的。除了一开始初始化的地方之外，在另一处，会有一个AddProcessorInfoTable()类似的函数来对Processor">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-09-17T06:29:41.000Z">
-<meta property="article:modified_time" content="2023-09-19T15:16:17.682Z">
+<meta property="article:modified_time" content="2023-09-19T15:46:53.463Z">
 <meta property="article:author" content="Wonder">
 <meta property="article:tag" content="SMBIOS">
 <meta property="article:tag" content="Processor">
@@ -237,7 +237,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          1.6k 字
         
       </span>
     
@@ -296,6 +296,14 @@
 
 <p>最后发现是因为MaxCoreToBusRatio 的值有问题，导致Max Speed 算出来的值也是不对的，其中FSB frequency 也是External Clock(12h) 的值。</p>
 <p>那么又有一个问题，MaxCoreToBusRatio 这个值是如何从processor 中获取的呢。<br>答案是通过AsmRead 读取MSR_TURBO_RATIO_LIMIT(1ADH) 寄存器，同理，关于Processor 其他的信息也可以从这个寄存器读取。(来自Intel® 64 and IA-32 Architectures<br>Software Developer’s Manual)</p>
+<p>其实，在Linux 中，我们也可以查看当前processor 的相关状态，在Linux 中叫动态频率调节系统CPUFreq, 一般使用以下命令查看相关信息：</p>
+<ul>
+<li><p>查看cpu0 当前工作频率：<br><code>cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq</code> </p>
+</li>
+<li><p>查看cpu0的最大工作频率：<br><code>cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq</code></p>
+</li>
+</ul>
+<p>Reference Links<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/398741182">https://zhuanlan.zhihu.com/p/398741182</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cnblogtjl/p/16672928.html">https://www.cnblogs.com/cnblogtjl/p/16672928.html</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/464414595">https://zhuanlan.zhihu.com/p/464414595</a></p>
 
                 
               </div>
